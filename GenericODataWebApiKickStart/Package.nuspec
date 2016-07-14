@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>GenericODataWebApiKickStart</id>
+    <version>1.1.5</version>
+    <title>GenericODataWebApiKickStart</title>
+    <authors>Developer</authors>
+    <owners></owners>
+    <description>
+      A long description of the package. This shows up in the right pane of the Add Package Dialog as well as in the Package Manager Console when listing packages using the Get-Package command.
+    </description>
+    <releaseNotes>
+    </releaseNotes>
+    <summary>
+      A short description of the package. If specified, this shows up in the middle pane of the Add Package Dialog. If not specified, a truncated version of the description is used instead.
+    </summary>
+    <language>en-US</language>
+    <projectUrl>https://nuget.org/packages/GenericODataWebApiKickStart</projectUrl>
+    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <copyright>Copyright  2016</copyright>
+    <dependencies>
+        <group targetFramework="net452">
+          <dependency id="CommonServiceLocator" version="1.3"/>
+          <dependency id="EntityFramework" version="6.1.3"/>
+          <dependency id="Microsoft.AspNet.OData" version="5.8.0"/>
+          <dependency id="Microsoft.AspNet.WebApi" version="5.2.3" />
+          <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3"/>
+          <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3"/>
+          <dependency id="Microsoft.AspNet.WebApi.WebHost" version="5.2.3"/>
+          <dependency id="Microsoft.OData.Core" version="6.15.0"/>
+          <dependency id="Microsoft.OData.Edm" version="6.15.0"/>
+          <dependency id="Microsoft.Spatial" version="6.15.0"/>
+          <dependency id="Newtonsoft.Json" version="8.0.3"/>
+          <dependency id="Unity.WebAPI" version="5.2.3"/>
+        </group>
+    </dependencies>
+    <references></references>
+    <tags></tags>
+  </metadata>
+  <files>
+    <file src="lib\" target="lib" />
+    <file src="tools\" target="tools" />
+    <file src="content\" target="content" />
+    <file src="readme.txt" target="" />
+  </files>
+</package>
