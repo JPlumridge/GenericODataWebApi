@@ -1,92 +1,27 @@
-﻿using System;
-using System.Data.Entity;
-using System.Linq;
-using System.Reflection;
+﻿using System.Data.Entity;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.OData;
 
 namespace GenericODataWebApi
 {
-    public class EntityFrameworkODataController<TEntity> : EntityFrameworkODataControllerBASE<TEntity>, IGenericODataController<TEntity> where TEntity : class
+    //todo: rename this
+    public abstract class EntityFrameworkODataController<TEntity> : ODataController where TEntity : class
     {
-        public EntityFrameworkODataController(DbContext dbContext) : base(dbContext)
+        protected EntityFrameworkODataProvider<TEntity> DataProvider { get; }
+        protected EntityFrameworkODataController(DbContext dbContext)
         {
+            //todo: decouple this, provide an interface through which any data can be accessed, EF or other
+            DataProvider = new EntityFrameworkODataProvider<TEntity>(dbContext);
         }
 
-        [EnableQueryCustomValidation]
-        [IfODataMethodEnabled(ODataOperations.Get)]
-        public IQueryable<TEntity> Get()
+        [IfODataMethodEnabled(ODataOperations.Delete)]
+        public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            return DataProvider.Get();
-        }
+            if (await DataProvider.Delete(key))
+                return StatusCode(HttpStatusCode.NoContent);
 
-        [EnableQueryCustomValidation]
-        [IfODataMethodEnabled(ODataOperations.Get)]
-        public SingleResult<TEntity> Get([FromODataUri] int key)
-        {
-            var result = DataProvider.GetByKeyAsQueryable(key);
-            return SingleResult.Create<TEntity>(result);
-        }
-
-        [IfODataMethodEnabled(ODataOperations.Get)]
-        public IHttpActionResult GetProperty(int key, string propertyName)
-        {
-            var prop = GetPropertyInfo<TEntity>(propertyName);
-            var container = DataProvider.GetByKeyAsQueryable(key).First();
-            
-            dynamic value = prop.GetValue(container);
-            return Ok(value);
-        }
-
-        protected PropertyInfo GetPropertyInfo<TParent>(string propertyName)
-        {
-            var prop = typeof (TParent).GetProperty(propertyName);
-            return prop;
-        }
-
-        [IfODataMethodEnabled(ODataOperations.Add)]
-        public async Task<IHttpActionResult> Post(TEntity item)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            await DataProvider.Add(item);
-            return Created(item);
-        }
-
-        [IfODataMethodEnabled(ODataOperations.Update)]
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, TEntity update)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (!DataProvider.KeyMatchesEntity(key, update))
-            {
-                return BadRequest();
-            }
-
-            if (await DataProvider.Replace(key, update))
-                return Updated(update);
-            return NotFound();
-        }
-
-        [IfODataMethodEnabled(ODataOperations.Update)]
-        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<TEntity> deltaEntity)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var updated = await DataProvider.Update(key, deltaEntity);
-
-            if (updated != null)
-                return Updated(updated);
             return NotFound();
         }
     }

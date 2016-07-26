@@ -36,41 +36,20 @@ namespace GenericODataWebApi
             return GetDescriptorFromEntitySet(request, routeName) ?? base.SelectController(request); 
         }
 
-        private static Dictionary<string, Type> TypeCache = new Dictionary<string, Type>();
-
-        private Type GetClrTypeFromEdmType(string typeName)
-        {
-            //Bit of a shame that OData doesn't "remember" what clr types are mapped to EDM types
-            if (!TypeCache.ContainsKey(typeName))
-            {
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.GlobalAssemblyCache);
-                var type = assemblies.First(a => a.GetType(typeName) != null).GetType(typeName);
-                try
-                {
-                    TypeCache.Add(typeName, type);
-                }
-                catch (ArgumentException)
-                {
-                    //This just means that two threads were able to attempt to add
-                }
-            }
-
-            return TypeCache[typeName];
-        }
-
         private HttpControllerDescriptor GetDescriptorFromEntitySet(HttpRequestMessage request, string entitySetName)
         {
             var httpConfig = request.GetConfiguration();
 
             var odataRoute = httpConfig.Routes.First(r => r is ODataRoute) as ODataRoute;
-            var set = odataRoute.PathRouteConstraint.EdmModel.EntityContainer.FindEntitySet(entitySetName);
+            var edmModel = odataRoute.PathRouteConstraint.EdmModel;
+
+            var set = edmModel.EntityContainer.FindEntitySet(entitySetName);
             
             if (set != null)
             {
                 var type = set.Type as EdmCollectionType;
-                var typeName = type.ElementType.FullName();
+                var realType = edmModel.GetAnnotationValue<ClrTypeAnnotation>(type.ElementType.Definition).ClrType;
 
-                var realType = GetClrTypeFromEdmType(typeName);
 
                 if (GenericODataConfig.TypeMapping.CustomMappingEnabled)
                 {
@@ -83,7 +62,7 @@ namespace GenericODataWebApi
                 }
                 else
                 {
-                    var controllerType = typeof (EntityFrameworkODataController<>);
+                    var controllerType = typeof (SimpleEntityFrameworkODataController<>);
                     controllerType = controllerType.MakeGenericType(realType);
 
                     return new HttpControllerDescriptor(GlobalConfiguration.Configuration, "EntityFrameworkOData", controllerType);

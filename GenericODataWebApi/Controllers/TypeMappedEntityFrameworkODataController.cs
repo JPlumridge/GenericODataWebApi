@@ -9,7 +9,7 @@ using System.Web.OData.Query;
 
 namespace GenericODataWebApi
 {
-    public class TypeMappedEntityFrameworkODataController<TEntity, TModel> : EntityFrameworkODataControllerBASE<TEntity>, IGenericODataController<TModel> where TEntity : class// where TModel : class //: GenericODataController<TEntity> where TEntity : class
+    public class TypeMappedEntityFrameworkODataController<TEntity, TModel> : EntityFrameworkODataController<TEntity>, IGenericODataController<TModel> where TEntity : class// where TModel : class //: GenericODataController<TEntity> where TEntity : class
     {
         public TypeMappedEntityFrameworkODataController(DbContext dbContext) : base(dbContext)
         {
