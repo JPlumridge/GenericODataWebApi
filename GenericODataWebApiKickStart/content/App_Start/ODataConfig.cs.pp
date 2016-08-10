@@ -1,6 +1,7 @@
 using System;
 using System.Web.Http;
 using System.Web.OData.Builder;
+using System.Web.OData.Batch;
 using System.Web.OData.Extensions;
 using System.Web.OData.Routing;
 using System.Web.OData.Routing.Conventions;
@@ -14,7 +15,7 @@ namespace $rootnamespace$
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
 
-            config.EnableGenericODataController();
+            config.EnableRouteBasedODataControllerSelection();
 
             var builder = new ODataConventionModelBuilder();
 
@@ -35,7 +36,8 @@ namespace $rootnamespace$
                 routePrefix: null,
                 model: builder.GetEdmModel(),
                 pathHandler: new DefaultODataPathHandler(),
-                routingConventions: routingConventions);
+                routingConventions: routingConventions,
+				batchHandler: new DefaultODataBatchHandler(GlobalConfiguration.DefaultServer));
         }
     }
 }
