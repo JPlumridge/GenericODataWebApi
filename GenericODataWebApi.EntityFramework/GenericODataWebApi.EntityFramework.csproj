@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{375580DD-D636-4D3D-8B27-5BE67030407E}</ProjectGuid>
+    <ProjectGuid>{EC7E7AC2-87FC-42F4-9C9F-003B6C30030F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GenericODataWebApi.EntityFramework</RootNamespace>
@@ -39,7 +39,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="GenericODataWebApi, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3ff0cd5338256a44, processorArchitecture=MSIL">
-      <HintPath>..\packages\GenericODataWebApiKickStart.1.1.7\lib\net45\GenericODataWebApi.dll</HintPath>
+      <HintPath>..\packages\GenericODataWebApiKickStart.1.1.8\lib\net45\GenericODataWebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.OData.Core, Version=6.15.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

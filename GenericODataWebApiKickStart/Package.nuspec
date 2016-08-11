@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>GenericODataWebApiKickStart</id>
+    <id>GenericODataWebApi</id>
     <version>1.1.8</version>
-    <title>GenericODataWebApiKickStart</title>
+    <title>GenericODataWebApi</title>
     <authors>Jonathan Plumridge</authors>
     <owners></owners>
     <description>
@@ -15,7 +15,7 @@
       Provides default OData functions for WebAPI
     </summary>
     <language>en-US</language>
-    <projectUrl>https://nuget.org/packages/GenericODataWebApiKickStart</projectUrl>
+    <projectUrl>https://nuget.org/packages/GenericODataWebApi</projectUrl>
     <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
