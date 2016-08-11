@@ -10,7 +10,7 @@ namespace GenericODataWebApi
 {
     public class SimpleDataProviderODataController<TEntity> : DataProviderODataController<TEntity>, IGenericODataController<TEntity> where TEntity : class
     {
-        public SimpleDataProviderODataController(DbContext dbContext) : base(dbContext)
+        public SimpleDataProviderODataController(IODataProvider<TEntity> dataProvider) : base( dataProvider)
         {
         }
 

@@ -10,10 +10,11 @@ namespace GenericODataWebApi
     public abstract class DataProviderODataController<TEntity> : ODataController where TEntity : class
     {
         protected IODataProvider<TEntity> DataProvider { get; }
-        protected DataProviderODataController(DbContext dbContext)
+        protected DataProviderODataController(IODataProvider<TEntity> dataProvider)
         {
             //todo: decouple this, provide an interface through which any data can be accessed, EF or other
-            DataProvider = new EntityFrameworkODataProvider<TEntity>(dbContext);
+            //DataProvider = new EntityFrameworkODataProvider<TEntity>(dbContext);
+            DataProvider = dataProvider;
         }
 
         [IfODataMethodEnabled(ODataOperations.Delete)]

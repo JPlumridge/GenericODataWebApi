@@ -11,7 +11,7 @@ namespace GenericODataWebApi
 {
     public class TypeMappedDataProviderODataController<TEntity, TModel> : DataProviderODataController<TEntity>, IGenericODataController<TModel> where TEntity : class
     {
-        public TypeMappedDataProviderODataController(DbContext dbContext) : base(dbContext)
+        public TypeMappedDataProviderODataController(IODataProvider<TEntity> dataProvider) : base(dataProvider)
         {
         }
 
