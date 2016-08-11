@@ -13,9 +13,10 @@ namespace $rootnamespace$
 			var container = new UnityContainer();
 
 			/*
-				Here, you need to do the following, where "MyEntities" is the type of your EF DbContext
+				Here, you need to do the following, where "MyDataProvider" is the type of your Data provider
+				Use the package "GenericODataWebApi.EntityFramework" for a ready to go EF provider
 
-            container.RegisterType<DbContext, MyEntities>();
+            container.RegisterType<IODataProvider, MyDataProvider>();
 
 			*/
 
