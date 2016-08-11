@@ -1,7 +1,6 @@
 using System.Data.Entity;
 using Microsoft.Practices.Unity;
 using System.Web.Http;
-using AutoMapper;
 using Unity.WebApi;
 using GenericODataWebApi;
 

@@ -2,17 +2,17 @@
 <package >
   <metadata>
     <id>GenericODataWebApiKickStart</id>
-    <version>1.1.5</version>
+    <version>1.1.6</version>
     <title>GenericODataWebApiKickStart</title>
-    <authors>Developer</authors>
+    <authors>Jonathan Plumridge</authors>
     <owners></owners>
     <description>
-      A long description of the package. This shows up in the right pane of the Add Package Dialog as well as in the Package Manager Console when listing packages using the Get-Package command.
+      Extends the Microsoft.AspNet.OData package to provide built in controllers with support for all OData functions for WebAPI
     </description>
     <releaseNotes>
     </releaseNotes>
     <summary>
-      A short description of the package. If specified, this shows up in the middle pane of the Add Package Dialog. If not specified, a truncated version of the description is used instead.
+      Provides default OData functions for WebAPI
     </summary>
     <language>en-US</language>
     <projectUrl>https://nuget.org/packages/GenericODataWebApiKickStart</projectUrl>
