@@ -28,16 +28,8 @@ namespace $rootnamespace$
 
             */
 
-            var routingConventions = ODataRoutingConventions.CreateDefault();
-            routingConventions.Insert(0, new PropertyODataRoutingConvention());
+            config.EnableOData(builder);
 
-            config.MapODataServiceRoute(
-                routeName: "ODataRoute",
-                routePrefix: null,
-                model: builder.GetEdmModel(),
-                pathHandler: new DefaultODataPathHandler(),
-                routingConventions: routingConventions,
-				batchHandler: new DefaultODataBatchHandler(GlobalConfiguration.DefaultServer));
         }
     }
 }

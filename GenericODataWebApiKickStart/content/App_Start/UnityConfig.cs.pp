@@ -1,4 +1,3 @@
-using System.Data.Entity;
 using Microsoft.Practices.Unity;
 using System.Web.Http;
 using Unity.WebApi;
