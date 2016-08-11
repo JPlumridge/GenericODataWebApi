@@ -8,7 +8,7 @@ using System.Web.OData;
 
 namespace GenericODataWebApi
 {
-    public class EntityFrameworkODataProvider<TEntity> where TEntity : class
+    public class EntityFrameworkODataProvider<TEntity> : IODataProvider<TEntity> where TEntity : class
     {
         private DbContext db;
 

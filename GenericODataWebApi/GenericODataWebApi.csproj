@@ -99,6 +99,7 @@
     <Compile Include="Controllers\EntityFrameworkODataController.cs" />
     <Compile Include="Controllers\TypeMappedEntityFrameworkODataController.cs" />
     <Compile Include="App_Start\PropertyOdataRoutingConvention.cs" />
+    <Compile Include="Entity Framework\IODataProvider.cs" />
     <Compile Include="OData\EnableQueryCustomValidationAttribute.cs" />
     <Compile Include="OData\GenericODataConfig.cs" />
     <Compile Include="TypeMapping\TypeMap.cs" />
