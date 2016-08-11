@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>GenericODataWebApi</id>
-    <version>1.1.8</version>
+    <version>1.2.0</version>
     <title>GenericODataWebApi</title>
     <authors>Jonathan Plumridge</authors>
     <owners></owners>
@@ -16,10 +16,9 @@
     </summary>
     <language>en-US</language>
     <projectUrl>https://nuget.org/packages/GenericODataWebApi</projectUrl>
-    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
-    <copyright>Copyright  2016</copyright>
+    <copyright>Copyright Jonathan Plumridge 2016</copyright>
     <dependencies>
         <group targetFramework="net452">
           <dependency id="CommonServiceLocator" version="1.3"/>
