@@ -7,10 +7,10 @@ using System.Web.OData;
 namespace GenericODataWebApi
 {
     //todo: rename this
-    public abstract class EntityFrameworkODataController<TEntity> : ODataController where TEntity : class
+    public abstract class DataProviderODataController<TEntity> : ODataController where TEntity : class
     {
-        protected EntityFrameworkODataProvider<TEntity> DataProvider { get; }
-        protected EntityFrameworkODataController(DbContext dbContext)
+        protected IODataProvider<TEntity> DataProvider { get; }
+        protected DataProviderODataController(DbContext dbContext)
         {
             //todo: decouple this, provide an interface through which any data can be accessed, EF or other
             DataProvider = new EntityFrameworkODataProvider<TEntity>(dbContext);

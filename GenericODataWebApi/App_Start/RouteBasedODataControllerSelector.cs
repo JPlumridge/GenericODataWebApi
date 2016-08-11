@@ -55,14 +55,14 @@ namespace GenericODataWebApi
                 {
                     var typeMap = GenericODataConfig.TypeMapping.ResolveTypeMap(realType);
 
-                    var controllerType = typeof(TypeMappedEntityFrameworkODataController<,>);
+                    var controllerType = typeof(TypeMappedDataProviderODataController<,>);
                     controllerType = controllerType.MakeGenericType(typeMap.SourceType, typeMap.DestinationType);
 
                     return new HttpControllerDescriptor(GlobalConfiguration.Configuration, "TypeMappedEntityFrameworkOData", controllerType);
                 }
                 else
                 {
-                    var controllerType = typeof (SimpleEntityFrameworkODataController<>);
+                    var controllerType = typeof (SimpleDataProviderODataController<>);
                     controllerType = controllerType.MakeGenericType(realType);
 
                     return new HttpControllerDescriptor(GlobalConfiguration.Configuration, "EntityFrameworkOData", controllerType);

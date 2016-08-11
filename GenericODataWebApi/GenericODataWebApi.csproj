@@ -93,13 +93,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteBasedODataControllerSelector.cs" />
-    <Compile Include="App_Start\HttpConfigurationExtensions.cs" />
     <Compile Include="Controllers\IGenericODataController.cs" />
     <Compile Include="Entity Framework\EntityFrameworkODataProvider.cs" />
-    <Compile Include="Controllers\EntityFrameworkODataController.cs" />
-    <Compile Include="Controllers\TypeMappedEntityFrameworkODataController.cs" />
+    <Compile Include="Controllers\DataProviderODataController.cs" />
+    <Compile Include="Controllers\TypeMappedDataProviderODataController.cs" />
     <Compile Include="App_Start\PropertyOdataRoutingConvention.cs" />
     <Compile Include="Entity Framework\IODataProvider.cs" />
+    <Compile Include="Extensions\HttpConfigurationExtensions.cs" />
     <Compile Include="OData\EnableQueryCustomValidationAttribute.cs" />
     <Compile Include="OData\GenericODataConfig.cs" />
     <Compile Include="TypeMapping\TypeMap.cs" />
@@ -107,7 +107,7 @@
     <Compile Include="TypeMapping\CustomTypeMapping.cs" />
     <Compile Include="TypeMapping\ITypeMapProvider.cs" />
     <Compile Include="OData\EnabledOperations.cs" />
-    <Compile Include="Controllers\SimpleEntityFrameworkODataController.cs" />
+    <Compile Include="Controllers\SimpleDataProviderODataController.cs" />
     <Compile Include="OData\ODataOperations.cs" />
     <Compile Include="OData\IfODataMethodEnabledAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,9 +9,9 @@ using System.Web.OData.Query;
 
 namespace GenericODataWebApi
 {
-    public class TypeMappedEntityFrameworkODataController<TEntity, TModel> : EntityFrameworkODataController<TEntity>/*, IGenericODataController<TModel>*/ where TEntity : class// where TModel : class //: GenericODataController<TEntity> where TEntity : class
+    public class TypeMappedDataProviderODataController<TEntity, TModel> : DataProviderODataController<TEntity>, IGenericODataController<TModel> where TEntity : class
     {
-        public TypeMappedEntityFrameworkODataController(DbContext dbContext) : base(dbContext)
+        public TypeMappedDataProviderODataController(DbContext dbContext) : base(dbContext)
         {
         }
 
@@ -27,18 +27,18 @@ namespace GenericODataWebApi
 
         [EnableQueryCustomValidation]
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public SingleResult<TModel> Get([FromODataUri] int key)
+        public async Task<SingleResult<TModel>> Get([FromODataUri] int key)
         {
-            var result = DataProvider.GetByKeyAsQueryable(key).Result.ProjectUsingCustom<TModel>();
+            var result = (await DataProvider.GetByKeyAsQueryable(key)).ProjectUsingCustom<TModel>();
             return SingleResult.Create<TModel>(result);
         }
 
         //todo: less duplication with base
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public IHttpActionResult GetProperty(int key, string propertyName)
+        public async Task<IHttpActionResult> GetProperty(int key, string propertyName)
         {
             var prop = GetPropertyInfo<TModel>(propertyName);
-            var container = DataProvider.GetByKeyAsQueryable(key).Result.ProjectUsingCustom<TModel>().First();
+            var container = (await DataProvider.GetByKeyAsQueryable(key)).ProjectUsingCustom<TModel>().First();
 
             dynamic value = prop.GetValue(container);
             return Ok(value);

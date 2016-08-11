@@ -8,9 +8,9 @@ using System.Web.OData;
 
 namespace GenericODataWebApi
 {
-    public class SimpleEntityFrameworkODataController<TEntity> : EntityFrameworkODataController<TEntity>, IGenericODataController<TEntity> where TEntity : class
+    public class SimpleDataProviderODataController<TEntity> : DataProviderODataController<TEntity>, IGenericODataController<TEntity> where TEntity : class
     {
-        public SimpleEntityFrameworkODataController(DbContext dbContext) : base(dbContext)
+        public SimpleDataProviderODataController(DbContext dbContext) : base(dbContext)
         {
         }
 
