@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>GenericODataWebApi.EntityFramework</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <title>GenericODataWebApi.EntityFramework</title>
     <authors>Developer</authors>
     <owners></owners>
