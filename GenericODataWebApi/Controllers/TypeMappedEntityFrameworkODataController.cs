@@ -9,7 +9,7 @@ using System.Web.OData.Query;
 
 namespace GenericODataWebApi
 {
-    public class TypeMappedEntityFrameworkODataController<TEntity, TModel> : EntityFrameworkODataController<TEntity>, IGenericODataController<TModel> where TEntity : class// where TModel : class //: GenericODataController<TEntity> where TEntity : class
+    public class TypeMappedEntityFrameworkODataController<TEntity, TModel> : EntityFrameworkODataController<TEntity>/*, IGenericODataController<TModel>*/ where TEntity : class// where TModel : class //: GenericODataController<TEntity> where TEntity : class
     {
         public TypeMappedEntityFrameworkODataController(DbContext dbContext) : base(dbContext)
         {
@@ -29,7 +29,7 @@ namespace GenericODataWebApi
         [IfODataMethodEnabled(ODataOperations.Get)]
         public SingleResult<TModel> Get([FromODataUri] int key)
         {
-            var result = DataProvider.GetByKeyAsQueryable(key).ProjectUsingCustom<TModel>();
+            var result = DataProvider.GetByKeyAsQueryable(key).Result.ProjectUsingCustom<TModel>();
             return SingleResult.Create<TModel>(result);
         }
 
@@ -38,7 +38,7 @@ namespace GenericODataWebApi
         public IHttpActionResult GetProperty(int key, string propertyName)
         {
             var prop = GetPropertyInfo<TModel>(propertyName);
-            var container = DataProvider.GetByKeyAsQueryable(key).ProjectUsingCustom<TModel>().First();
+            var container = DataProvider.GetByKeyAsQueryable(key).Result.ProjectUsingCustom<TModel>().First();
 
             dynamic value = prop.GetValue(container);
             return Ok(value);

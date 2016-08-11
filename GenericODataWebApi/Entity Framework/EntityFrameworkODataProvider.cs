@@ -22,27 +22,23 @@ namespace GenericODataWebApi
             return db.Set<TEntity>().AsNoTracking();
         }
 
-        public IQueryable<TEntity> GetByKeyAsQueryable(int key)
+        public async Task<IQueryable<TEntity>> GetByKeyAsQueryable(int key)
         {
-            return GetByKeyAsEnumerable(key).AsQueryable();//.ProjectTo<TModel>(MapperConfig);
-        }
-
-        private IEnumerable<TEntity> GetByKeyAsEnumerable(int key)
-        {
-            yield return GetByKey(key);
+            var wrapper = new[] {await GetByKey(key)};
+            return wrapper.AsQueryable();
         }
 
         /// <summary>
         /// If your key is NOT the primary key, override this!
         /// </summary>
-        public virtual TEntity GetByKey(int key)
+        public virtual async Task<TEntity> GetByKey(int key)
         {
-            return db.Set<TEntity>().Find(key);
+            return await db.Set<TEntity>().FindAsync(key);
         }
 
         public async Task<bool> Delete(int key)
         {
-            var toDelete = GetByKey(key);
+            var toDelete = await GetByKey(key);
             if (toDelete == null)
                 return false;
 
@@ -77,7 +73,7 @@ namespace GenericODataWebApi
 
         public async Task<TEntity> Update(int key, Delta<TEntity> deltaEntity)
         {
-            var matching = GetByKey(key);
+            var matching = await GetByKey(key);
 
             if (matching == null)
                 return null;

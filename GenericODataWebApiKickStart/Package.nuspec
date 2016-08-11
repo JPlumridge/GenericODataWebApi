@@ -2,12 +2,12 @@
 <package >
   <metadata>
     <id>GenericODataWebApiKickStart</id>
-    <version>1.1.6</version>
+    <version>1.1.7</version>
     <title>GenericODataWebApiKickStart</title>
     <authors>Jonathan Plumridge</authors>
     <owners></owners>
     <description>
-      Extends the Microsoft.AspNet.OData package to provide built in controllers with support for all OData functions for WebAPI
+      Extends the Microsoft.AspNet.OData package to provide built in controllers with support for all OData functions for WebAPI.
     </description>
     <releaseNotes>
     </releaseNotes>

@@ -23,17 +23,17 @@ namespace GenericODataWebApi
 
         [EnableQueryCustomValidation]
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public SingleResult<TEntity> Get([FromODataUri] int key)
+        public async Task<SingleResult<TEntity>> Get([FromODataUri] int key)
         {
-            var result = DataProvider.GetByKeyAsQueryable(key);
+            var result = await DataProvider.GetByKeyAsQueryable(key);
             return SingleResult.Create<TEntity>(result);
         }
 
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public IHttpActionResult GetProperty(int key, string propertyName)
+        public async Task<IHttpActionResult> GetProperty(int key, string propertyName)
         {
             var prop = GetPropertyInfo<TEntity>(propertyName);
-            var container = DataProvider.GetByKeyAsQueryable(key).First();
+            var container = await DataProvider.GetByKey(key);
             
             dynamic value = prop.GetValue(container);
             return Ok(value);

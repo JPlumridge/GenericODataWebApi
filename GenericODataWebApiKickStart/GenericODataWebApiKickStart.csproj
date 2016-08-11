@@ -56,7 +56,9 @@
     <None Include="NuGetPackage.ps1" />
     <None Include="NuGetSetup.ps1" />
     <None Include="NuGet.exe" />
-    <None Include="NuGet.config" />
+    <None Include="NuGet.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>
