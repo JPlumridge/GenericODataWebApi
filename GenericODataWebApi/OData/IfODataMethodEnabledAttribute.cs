@@ -21,7 +21,7 @@ namespace GenericODataWebApi
             if(Operations.All(o => o.IsEnabled()))
                 return base.OnActionExecutingAsync(actionContext, cancellationToken);
 
-            throw new HttpResponseException(HttpStatusCode.NotFound);
+            throw new HttpResponseException(HttpStatusCode.MethodNotAllowed);
         }
     }
 }

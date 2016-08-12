@@ -16,6 +16,7 @@ public static void Register(HttpConfiguration config)
 	AddCircuitBreaker();
 	AddMonitoring();
 
+	UnityConfig.RegisterComponents();
 	ODataConfig.Register(config);						// <----- Add this line
 }
 

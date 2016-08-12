@@ -33,7 +33,6 @@ namespace $rootnamespace$
             */
 
             config.EnableOData(builder);
-
         }
     }
 }
