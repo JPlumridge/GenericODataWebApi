@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>GenericODataWebApi.EntityFramework</id>
-    <version>1.0.1</version>
+    <version>1.0.6</version>
     <title>GenericODataWebApi.EntityFramework</title>
     <authors>Developer</authors>
     <owners></owners>
@@ -21,7 +21,7 @@
     <copyright>Copyright  2016</copyright>
     <dependencies>
       <group targetFramework="net452">
-        <dependency id="GenericODataWebApi" version="1.2.0"/>
+        <dependency id="GenericODataWebApi" version="1.2.2"/>
       </group>
     </dependencies>
     <references></references>
