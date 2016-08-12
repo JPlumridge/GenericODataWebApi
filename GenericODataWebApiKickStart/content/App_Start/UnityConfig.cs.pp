@@ -13,7 +13,10 @@ namespace $rootnamespace$
 
 			/*
 				Here, you need to do the following, where "MyODataProvider" is the type of your Data provider.
-				Use the package "GenericODataWebApi.EntityFramework" for a ready to go EntityFramework provider.
+				You have two options:
+
+				1. Create your own class that implements IODataProvider
+				2. Use the package "GenericODataWebApi.EntityFramework" for a ready to go EntityFramework provider.
 
 			container.RegisterType(typeof(IODataProvider<>), typeof(MyODataProvider<>));
 

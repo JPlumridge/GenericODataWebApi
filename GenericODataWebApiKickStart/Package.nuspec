@@ -2,12 +2,13 @@
 <package >
   <metadata>
     <id>GenericODataWebApi</id>
-    <version>1.2.2</version>
+    <version>1.2.4</version>
     <title>GenericODataWebApi</title>
     <authors>Jonathan Plumridge</authors>
     <owners></owners>
     <description>
       Extends the Microsoft.AspNet.OData package to provide built in controllers with support for all OData functions for WebAPI.
+      Just register an IODataProvider with Unity, 
     </description>
     <releaseNotes>
     </releaseNotes>
@@ -36,7 +37,7 @@
         </group>
     </dependencies>
     <references></references>
-    <tags></tags>
+    <tags>OData WebAPI Generic</tags>
   </metadata>
   <files>
     <file src="lib\" target="lib" />
