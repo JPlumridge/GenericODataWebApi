@@ -13,7 +13,7 @@ In order to enable OData using this package, you need to do a few things:
 4. Register your data provider with Unity
 
 ##Example
-The NuGet package adds the file ``C#ODataConfig.cs`` which can be configured:
+The NuGet package adds the file ``ODataConfig.cs`` which can be configured:
 ```C#
 config.EnableRouteBasedODataControllerSelection();
 
@@ -24,17 +24,17 @@ builder.EntitySet<Location>("Locations");
 
 config.EnableOData(builder);
 ```
-The package aslo adds the file ``C#UnityConfig.cs`` in which an ``C#IODataProvider`` must be registered:
+The package aslo adds the file ``UnityConfig.cs`` in which an ``C#IODataProvider`` must be registered:
 ```C#
 container.RegisterType(typeof(IODataProvider<>), typeof(MyODataProvider<>));
 ```
-In the above, ``C#MyODataProvider.cs`` is a type you create that implements ``C#IODataProvider``
+In the above, ``MyODataProvider.cs`` is a type you create that implements ``IODataProvider``
 #Entity Framework
-This package provides a ready-to-go EntityFramework implementation of the ``C#IODataProvider``
+This package provides a ready-to-go EntityFramework implementation of the ``IODataProvider``
 
 Available on NuGet at https://www.nuget.org/packages/GenericODataWebApi.EntityFramework
 ##Setup
-Setup your project as described in the examples above, but when it comes to ``C#UnityConfig.cs`` simply do the following, where ``C#JurassicEntities`` is the name of your ``C#DbContext``
+Setup your project as described in the examples above, but when it comes to ``UnityConfig.cs`` simply do the following, where ``JurassicEntities`` is the name of your ``DbContext``
 ```C#
 container.RegisterEntityFrameworkOData<JurassicEntities>();
 ```
