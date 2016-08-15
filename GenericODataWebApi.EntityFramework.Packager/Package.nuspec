@@ -15,7 +15,7 @@
       Provides an Entity Framework provider for use with the GenericODataWebApi package
     </summary>
     <language>en-US</language>
-    <projectUrl>https://nuget.org/packages/GenericODataWebApi.EntityFramework</projectUrl>
+    <projectUrl>https://github.com/JPlumridge/GenericODataWebApi</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
     <copyright>Copyright Jonathan Plumridge 2016</copyright>
