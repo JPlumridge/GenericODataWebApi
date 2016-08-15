@@ -24,13 +24,13 @@ builder.EntitySet<Location>("Locations");
 
 config.EnableOData(builder);
 ```
-The package aslo adds the file ``C#UnityConfig.cs`` in which an IODataProvider must be registered:
+The package aslo adds the file ``C#UnityConfig.cs`` in which an ``C#IODataProvider`` must be registered:
 ```C#
 container.RegisterType(typeof(IODataProvider<>), typeof(MyODataProvider<>));
 ```
 In the above, ``C#MyODataProvider.cs`` is a type you create that implements ``C#IODataProvider``
 #Entity Framework
-This package provides a ready-to-go EntityFramework implementation of the IODataProvider
+This package provides a ready-to-go EntityFramework implementation of the ``C#IODataProvider``
 
 Available on NuGet at https://www.nuget.org/packages/GenericODataWebApi.EntityFramework
 ##Setup
