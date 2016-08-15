@@ -1,5 +1,5 @@
 # GenericODataWebApi
-Provides controllers that provide all OData functions for an entity set
+Provides controllers that provide all OData functions for an entity set, and automatic integration into the WebAPI pipeline
 
 Available on NuGet at https://www.nuget.org/packages/GenericODataWebApi
 ##Setup
