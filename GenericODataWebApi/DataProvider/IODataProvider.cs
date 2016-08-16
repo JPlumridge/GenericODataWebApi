@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.OData;
 
@@ -9,8 +10,8 @@ namespace GenericODataWebApi
         Task Add(TEntity item);
         Task<bool> Delete(int key);
         IQueryable<TEntity> Get();
-        Task<TEntity> GetByKey(int key);
-        Task<IQueryable<TEntity>> GetByKeyAsQueryable(int key);
+        Task<TEntity> GetByKey(Dictionary<string, object> keyValues);
+        Task<IQueryable<TEntity>> GetByKeyAsQueryable(Dictionary<string, object> keyValues);
         bool KeyMatchesEntity(int key, TEntity item);
         Task<bool> Replace(int key, TEntity item);
         Task<TEntity> Update(int key, Delta<TEntity> deltaEntity);

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.OData;
 using GenericODataWebApi;
+using GenericODataWebApi.DataProvider;
 
 namespace GenericODataWebApi.EntityFramework
 {
@@ -23,15 +24,20 @@ namespace GenericODataWebApi.EntityFramework
             return db.Set<TEntity>().AsNoTracking();
         }
 
-        public async Task<IQueryable<TEntity>> GetByKeyAsQueryable(int key)
+        public async Task<IQueryable<TEntity>> GetByKeyAsQueryable(Dictionary<string, object> keyValues)
         {
-            var wrapper = new[] { await GetByKey(key) };
+            var wrapper = new[] { await GetByKey(keyValues) };
             return wrapper.AsQueryable();
         }
 
-        /// <summary>
-        /// If your key is NOT the primary key, override this!
-        /// </summary>
+        public async Task<TEntity> GetByKey(Dictionary<string, object> keyValues)
+        {
+            return db.Set<TEntity>().FindByKey(keyValues);
+        }
+
+        // <summary>
+        // If your key is NOT the primary key, override this!
+        // </summary>
         public virtual async Task<TEntity> GetByKey(int key)
         {
             //todo: ascertain what the key actually is

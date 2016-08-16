@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.OData;
+using System.Web.OData.Batch;
+using System.Web.OData.Extensions;
 
 namespace GenericODataWebApi
 {
@@ -24,6 +27,9 @@ namespace GenericODataWebApi
         [IfODataMethodEnabled(ODataOperations.Get)]
         public async Task<SingleResult<TEntity>> Get([FromODataUri] int key)
         {
+            //this.Request.ODataProperties().Path
+
+            var request = this.Request;
             var result = await DataProvider.GetByKeyAsQueryable(key);
             return SingleResult.Create<TEntity>(result);
         }
@@ -32,7 +38,8 @@ namespace GenericODataWebApi
         public async Task<IHttpActionResult> GetProperty(int key, string propertyName)
         {
             var prop = GetPropertyInfo<TEntity>(propertyName);
-            var container = await DataProvider.GetByKey(key);
+            //var container = await DataProvider.GetByKey(key);
+            var container = (await DataProvider.GetByKeyAsQueryable(key)).First();
             
             dynamic value = prop.GetValue(container);
             return Ok(value);

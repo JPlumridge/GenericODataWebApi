@@ -84,12 +84,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\RouteBasedODataControllerSelector.cs" />
+    <Compile Include="DataProvider\IKeyResolutionStrategy.cs" />
+    <Compile Include="Routing\RouteBasedODataControllerSelector.cs" />
     <Compile Include="Controllers\IGenericODataController.cs" />
     <Compile Include="Controllers\DataProviderODataController.cs" />
     <Compile Include="Controllers\TypeMappedDataProviderODataController.cs" />
-    <Compile Include="App_Start\PropertyOdataRoutingConvention.cs" />
+    <Compile Include="Routing\PropertyOdataRoutingConvention.cs" />
     <Compile Include="DataProvider\IODataProvider.cs" />
+    <Compile Include="DataProvider\QueryableDataProvider.cs" />
     <Compile Include="Extensions\HttpConfigurationExtensions.cs" />
     <Compile Include="OData\EnableQueryCustomValidationAttribute.cs" />
     <Compile Include="OData\GenericODataConfig.cs" />
