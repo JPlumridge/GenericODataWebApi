@@ -17,9 +17,9 @@ namespace GenericODataWebApi
         }
 
         [IfODataMethodEnabled(ODataOperations.Delete)]
-        public async Task<IHttpActionResult> Delete([FromODataUri] int key)
+        public async Task<IHttpActionResult> Delete([FromODataUri] IKeyProvider keyProvider)
         {
-            if (await DataProvider.Delete(key))
+            if (await DataProvider.Delete(keyProvider))
                 return StatusCode(HttpStatusCode.NoContent);
 
             return NotFound();

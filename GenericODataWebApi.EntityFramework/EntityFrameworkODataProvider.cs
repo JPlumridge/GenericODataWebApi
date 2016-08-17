@@ -10,13 +10,32 @@ using GenericODataWebApi.DataProvider;
 
 namespace GenericODataWebApi.EntityFramework
 {
+    public class EntityFrameworkPrimaryKeyLocator<TEntity> : IKeyLocator<TEntity> where TEntity : class
+    {
+        private DbContext db;
+
+        public EntityFrameworkPrimaryKeyLocator(DbContext dbContext)
+        {
+            db = dbContext;
+        }
+
+        public async Task<TEntity> FindByKey(IKeyProvider keyProvider)
+        {
+            var keys = keyProvider.GetKeys().Select(k => k.Value);
+            return await db.Set<TEntity>().FindAsync(keys);
+        }
+    }
+
+
     public class EntityFrameworkODataProvider<TEntity> : IODataProvider<TEntity> where TEntity : class
     {
         private DbContext db;
+        private IKeyLocator<TEntity> KeyLocator { get; }
 
         public EntityFrameworkODataProvider(DbContext dbContext)
         {
             db = dbContext;
+            this.KeyLocator = new EntityFrameworkPrimaryKeyLocator<TEntity>(dbContext); //todo: decouple
         }
 
         public IQueryable<TEntity> Get()
@@ -24,29 +43,29 @@ namespace GenericODataWebApi.EntityFramework
             return db.Set<TEntity>().AsNoTracking();
         }
 
-        public async Task<IQueryable<TEntity>> GetByKeyAsQueryable(Dictionary<string, object> keyValues)
+        public async Task<IQueryable<TEntity>> GetByKeyAsQueryable(IKeyProvider keyProvider)
         {
-            var wrapper = new[] { await GetByKey(keyValues) };
+            var wrapper = new[] { await GetByKey(keyProvider) };
             return wrapper.AsQueryable();
         }
 
-        public async Task<TEntity> GetByKey(Dictionary<string, object> keyValues)
+        public async Task<TEntity> GetByKey(IKeyProvider keyProvider)
         {
-            return db.Set<TEntity>().FindByKey(keyValues);
+            return await KeyLocator.FindByKey(keyProvider);
         }
 
-        // <summary>
-        // If your key is NOT the primary key, override this!
-        // </summary>
-        public virtual async Task<TEntity> GetByKey(int key)
-        {
-            //todo: ascertain what the key actually is
-            return await db.Set<TEntity>().FindAsync(key);
-        }
+        //// <summary>
+        //// If your key is NOT the primary key, override this!
+        //// </summary>
+        //public virtual async Task<TEntity> GetByKey(int key)
+        //{
+        //    //todo: ascertain what the key actually is
+        //    return await db.Set<TEntity>().FindAsync(key);
+        //}
 
-        public async Task<bool> Delete(int key)
+        public async Task<bool> Delete(IKeyProvider keyProvider)
         {
-            var toDelete = await GetByKey(key);
+            var toDelete = await GetByKey(keyProvider);
             if (toDelete == null)
                 return false;
 
@@ -61,7 +80,7 @@ namespace GenericODataWebApi.EntityFramework
             await db.SaveChangesAsync();
         }
 
-        public async Task<bool> Replace(int key, TEntity item)
+        public async Task<bool> Replace(TEntity item)
         {
             db.Entry(item).State = EntityState.Modified;
             try
@@ -79,9 +98,9 @@ namespace GenericODataWebApi.EntityFramework
             }
         }
 
-        public async Task<TEntity> Update(int key, Delta<TEntity> deltaEntity)
+        public async Task<TEntity> Update(IKeyProvider keyProvider, Delta<TEntity> deltaEntity)
         {
-            var matching = await GetByKey(key);
+            var matching = await GetByKey(keyProvider);
 
             if (matching == null)
                 return null;
@@ -106,11 +125,11 @@ namespace GenericODataWebApi.EntityFramework
             }
         }
 
-        public bool KeyMatchesEntity(int key, TEntity item)
+        public bool KeyMatchesEntity(IKeyProvider keyProvider, TEntity item)
         {
             var efAwareItem = db.Set<TEntity>().Attach(item);
 
-            var keyItem = GetByKey(key);
+            var keyItem = GetByKey(keyProvider);
             return efAwareItem == keyItem;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
@@ -25,21 +26,21 @@ namespace GenericODataWebApi
 
         [EnableQueryCustomValidation]
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public async Task<SingleResult<TEntity>> Get([FromODataUri] int key)
+        public async Task<SingleResult<TEntity>> Get([FromODataUri] IKeyProvider keyProvider)
         {
             //this.Request.ODataProperties().Path
 
             var request = this.Request;
-            var result = await DataProvider.GetByKeyAsQueryable(key);
+            var result = await DataProvider.GetByKeyAsQueryable(keyProvider);
             return SingleResult.Create<TEntity>(result);
         }
 
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public async Task<IHttpActionResult> GetProperty(int key, string propertyName)
+        public async Task<IHttpActionResult> GetProperty(IKeyProvider keyProvider, string propertyName)
         {
             var prop = GetPropertyInfo<TEntity>(propertyName);
             //var container = await DataProvider.GetByKey(key);
-            var container = (await DataProvider.GetByKeyAsQueryable(key)).First();
+            var container = (await DataProvider.GetByKeyAsQueryable(keyProvider)).First();
             
             dynamic value = prop.GetValue(container);
             return Ok(value);
@@ -64,32 +65,32 @@ namespace GenericODataWebApi
         }
 
         [IfODataMethodEnabled(ODataOperations.Update)]
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, TEntity update)
+        public async Task<IHttpActionResult> Put([FromODataUri] IKeyProvider keyProvider, TEntity update)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (!DataProvider.KeyMatchesEntity(key, update))
+            if (!DataProvider.KeyMatchesEntity(keyProvider, update))
             {
                 return BadRequest();
             }
 
-            if (await DataProvider.Replace(key, update))
+            if (await DataProvider.Replace(update))
                 return Updated(update);
             return NotFound();
         }
 
         [IfODataMethodEnabled(ODataOperations.Update)]
-        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<TEntity> deltaEntity)
+        public async Task<IHttpActionResult> Patch([FromODataUri] IKeyProvider keyProvider, Delta<TEntity> deltaEntity)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var updated = await DataProvider.Update(key, deltaEntity);
+            var updated = await DataProvider.Update(keyProvider, deltaEntity);
 
             if (updated != null)
                 return Updated(updated);

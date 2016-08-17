@@ -25,18 +25,18 @@ namespace GenericODataWebApi
 
         [EnableQueryCustomValidation]
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public async Task<SingleResult<TModel>> Get([FromODataUri] int key)
+        public async Task<SingleResult<TModel>> Get([FromODataUri] IKeyProvider keyProvider)
         {
-            var result = (await DataProvider.GetByKeyAsQueryable(key)).ProjectUsingCustom<TModel>();
+            var result = (await DataProvider.GetByKeyAsQueryable(keyProvider)).ProjectUsingCustom<TModel>();
             return SingleResult.Create<TModel>(result);
         }
 
         //todo: less duplication with base
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public async Task<IHttpActionResult> GetProperty(int key, string propertyName)
+        public async Task<IHttpActionResult> GetProperty(IKeyProvider keyProvider, string propertyName)
         {
             var prop = GetPropertyInfo<TModel>(propertyName);
-            var container = (await DataProvider.GetByKeyAsQueryable(key)).ProjectUsingCustom<TModel>().First();
+            var container = (await DataProvider.GetByKeyAsQueryable(keyProvider)).ProjectUsingCustom<TModel>().First();
 
             dynamic value = prop.GetValue(container);
             return Ok(value);
@@ -63,7 +63,7 @@ namespace GenericODataWebApi
         }
 
         [IfODataMethodEnabled(ODataOperations.Update)]
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, TModel update)
+        public async Task<IHttpActionResult> Put([FromODataUri] IKeyProvider keyProvider, TModel update)
         {
             if (!ModelState.IsValid)
             {
@@ -72,12 +72,12 @@ namespace GenericODataWebApi
 
             var converted = update.Map<TEntity>();
 
-            if (!DataProvider.KeyMatchesEntity(key, converted))
+            if (!DataProvider.KeyMatchesEntity(keyProvider, converted))
             {
                 return BadRequest();
             }
 
-            if (await DataProvider.Replace(key, converted))
+            if (await DataProvider.Replace(converted))
                 return Updated(update);
             return NotFound();
         }

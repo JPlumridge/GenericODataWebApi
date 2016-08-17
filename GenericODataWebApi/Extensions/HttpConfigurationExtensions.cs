@@ -19,6 +19,7 @@ namespace GenericODataWebApi
         {
             var routingConventions = ODataRoutingConventions.CreateDefault();
             routingConventions.Insert(0, new PropertyODataRoutingConvention());
+            //routingConventions.Insert(0, new KeyRoutingConvention());
 
             config.MapODataServiceRoute(
                 routeName: "ODataRoute", //todo: support multiple names

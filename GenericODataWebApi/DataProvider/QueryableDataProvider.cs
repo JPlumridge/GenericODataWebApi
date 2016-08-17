@@ -8,34 +8,55 @@ using System.Web.OData;
 
 namespace GenericODataWebApi.DataProvider
 {
-    public static class QueryableExtensions
+    //public static class QueryableExtensions
+    //{
+    //    public static T FindByKey<T>(this IQueryable<T> sourceQueryable, Dictionary<string, object> keyValues)
+    //    {
+    //        var entityType = typeof(T);
+    //        var keyProps = keyValues.Select(kvp => new { value = kvp.Value, prop = entityType.GetProperty(kvp.Key) });
+    //        var match = sourceQueryable.SingleOrDefault(i => keyProps.All(kp => kp.prop.GetValue(i) == kp.value));
+
+    //        return match;
+    //    }
+    //}
+
+    public class QueryableKeyLocator<T> : IKeyLocator<T>
     {
-        public static T FindByKey<T>(this IQueryable<T> sourceQueryable, Dictionary<string, object> keyValues)
+        private IQueryable<T> SourceQueryable { get; }
+
+        public QueryableKeyLocator(IQueryable<T> sourceQueryable)
+        {
+            this.SourceQueryable = sourceQueryable;
+        }
+
+        public Task<T> FindByKey(IKeyProvider keyProvider)
         {
             var entityType = typeof(T);
-            var keyProps = keyValues.Select(kvp => new { value = kvp.Value, prop = entityType.GetProperty(kvp.Key) });
-            var match = sourceQueryable.SingleOrDefault(i => keyProps.All(kp => kp.prop.GetValue(i) == kp.value));
+            var keys = keyProvider.GetKeys();
 
-            return match;
+            var keyProps = keys.Select(key => new { value = key.Value, prop = entityType.GetProperty(key.Name) });
+            var match = SourceQueryable.SingleOrDefault(i => keyProps.All(kp => kp.prop.GetValue(i) == kp.value));
+
+            return Task.FromResult(match);
         }
     }
 
     public class QueryableDataProvider<TEntity> : IODataProvider<TEntity> where TEntity : class
     {
         private IQueryable<TEntity> SourceQueryable { get; }
-        //public IKeyResolutionStrategy KeyResolver { get; set; }
+        private IKeyLocator<TEntity> KeyLocator { get; } 
 
-        public QueryableDataProvider(IQueryable<TEntity> sourceQueryable/*, IKeyResolutionStrategy keyResolver*/)
+        public QueryableDataProvider(IQueryable<TEntity> sourceQueryable)
         {
             this.SourceQueryable = sourceQueryable;
-            //this.KeyResolver = keyResolver;
+            this.KeyLocator = new QueryableKeyLocator<TEntity>(SourceQueryable); //todo: decouple!
         }
         public Task Add(TEntity item)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> Delete(int key)
+        public Task<bool> Delete(IKeyProvider keyProvider)
         {
             throw new NotImplementedException();
         }
@@ -45,27 +66,28 @@ namespace GenericODataWebApi.DataProvider
             return SourceQueryable;
         }
 
-        public Task<TEntity> GetByKey(Dictionary<string, object> keyValues)
+        public Task<TEntity> GetByKey(IKeyProvider keyProvider)
         {
-            return Task.FromResult(SourceQueryable.FindByKey(keyValues));
+            return KeyLocator.FindByKey(keyProvider);
         }
 
-        public Task<IQueryable<TEntity>> GetByKeyAsQueryable(Dictionary<string, object> keyValues)
+        public Task<IQueryable<TEntity>> GetByKeyAsQueryable(IKeyProvider keyProvider)
         {
-            throw new NotImplementedException();
+            var queryable = new[] {KeyLocator.FindByKey(keyProvider).Result}.AsQueryable();
+            return Task.FromResult(queryable);
         }
 
-        public bool KeyMatchesEntity(int key, TEntity item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> Replace(int key, TEntity item)
+        public bool KeyMatchesEntity(IKeyProvider keyProvider, TEntity item)
         {
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> Update(int key, Delta<TEntity> deltaEntity)
+        public Task<bool> Replace(TEntity item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TEntity> Update(IKeyProvider keyProvider, Delta<TEntity> deltaEntity)
         {
             throw new NotImplementedException();
         }
