@@ -22,7 +22,7 @@ namespace GenericODataWebApi.EntityFramework
         public async Task<TEntity> FindByKey(IKeyProvider keyProvider)
         {
             var keys = keyProvider.GetKeys().Select(k => k.Value);
-            return await db.Set<TEntity>().FindAsync(keys);
+            return await db.Set<TEntity>().FindAsync(keys.ToArray());
         }
     }
 

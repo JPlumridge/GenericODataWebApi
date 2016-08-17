@@ -21,7 +21,7 @@ namespace GenericODataWebApi
 
     public class CompositeKey : IKeyProvider
     {
-        public IEnumerable<IKey> Keys;
+        public IEnumerable<IKey> Keys { get; set; }
 
         public CompositeKey(IEnumerable<IKey> keys)
         {

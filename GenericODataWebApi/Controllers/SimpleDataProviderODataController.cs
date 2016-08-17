@@ -5,13 +5,15 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.ModelBinding;
 using System.Web.OData;
 using System.Web.OData.Batch;
 using System.Web.OData.Extensions;
+using System.Web.OData.Routing;
 
 namespace GenericODataWebApi
 {
-    public class SimpleDataProviderODataController<TEntity> : DataProviderODataController<TEntity>, IGenericODataController<TEntity> where TEntity : class
+    public class SimpleDataProviderODataController<TEntity> : DataProviderODataController<TEntity>/*, IGenericODataController<TEntity>*/ where TEntity : class
     {
         public SimpleDataProviderODataController(IODataProvider<TEntity> dataProvider) : base( dataProvider)
         {
@@ -26,12 +28,12 @@ namespace GenericODataWebApi
 
         [EnableQueryCustomValidation]
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public async Task<SingleResult<TEntity>> Get([FromODataUri] IKeyProvider keyProvider)
+        public async Task<SingleResult<TEntity>> GetByKey(IKeyProvider keyProvider)
         {
-            //this.Request.ODataProperties().Path
+            //var thing = (IKeyProvider) keyProvider;
+            var thing = this.ControllerContext.RouteData.Values.Values.OfType<IKeyProvider>().SingleOrDefault();
 
-            var request = this.Request;
-            var result = await DataProvider.GetByKeyAsQueryable(keyProvider);
+            var result = await DataProvider.GetByKeyAsQueryable(thing);
             return SingleResult.Create<TEntity>(result);
         }
 
@@ -65,7 +67,7 @@ namespace GenericODataWebApi
         }
 
         [IfODataMethodEnabled(ODataOperations.Update)]
-        public async Task<IHttpActionResult> Put([FromODataUri] IKeyProvider keyProvider, TEntity update)
+        public async Task<IHttpActionResult> Put([FromRouteData] IKeyProvider keyProvider, TEntity update)
         {
             if (!ModelState.IsValid)
             {

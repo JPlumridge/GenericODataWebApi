@@ -17,14 +17,17 @@ namespace GenericODataWebApi
 
         public static void EnableOData(this HttpConfiguration config, ODataModelBuilder builder)
         {
-            var routingConventions = ODataRoutingConventions.CreateDefault();
+            var edmModel = builder.GetEdmModel();
+
+            var routingConventions = ODataRoutingConventions.CreateDefaultWithAttributeRouting(config, edmModel);
             routingConventions.Insert(0, new PropertyODataRoutingConvention());
-            //routingConventions.Insert(0, new KeyRoutingConvention());
+            routingConventions.Insert(0, new KeyRoutingConvention());
+            routingConventions.Insert(0, new KeyDetectorRoutingConvention());
 
             config.MapODataServiceRoute(
                 routeName: "ODataRoute", //todo: support multiple names
                 routePrefix: null,
-                model: builder.GetEdmModel(),
+                model: edmModel,
                 pathHandler: new DefaultODataPathHandler(),
                 routingConventions: routingConventions,
                 batchHandler: new DefaultODataBatchHandler(GlobalConfiguration.DefaultServer));
