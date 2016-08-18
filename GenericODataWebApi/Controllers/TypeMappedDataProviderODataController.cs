@@ -25,7 +25,7 @@ namespace GenericODataWebApi
 
         [EnableQueryCustomValidation]
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public async Task<SingleResult<TModel>> Get([FromODataUri] IKeyProvider keyProvider)
+        public async Task<SingleResult<TModel>> Get([FromRouteData] IKeyProvider keyProvider)
         {
             var result = (await DataProvider.GetByKeyAsQueryable(keyProvider)).ProjectUsingCustom<TModel>();
             return SingleResult.Create<TModel>(result);
@@ -33,7 +33,7 @@ namespace GenericODataWebApi
 
         //todo: less duplication with base
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public async Task<IHttpActionResult> GetProperty(IKeyProvider keyProvider, string propertyName)
+        public async Task<IHttpActionResult> GetProperty([FromRouteData]IKeyProvider keyProvider, string propertyName)
         {
             var prop = GetPropertyInfo<TModel>(propertyName);
             var container = (await DataProvider.GetByKeyAsQueryable(keyProvider)).ProjectUsingCustom<TModel>().First();
@@ -63,7 +63,7 @@ namespace GenericODataWebApi
         }
 
         [IfODataMethodEnabled(ODataOperations.Update)]
-        public async Task<IHttpActionResult> Put([FromODataUri] IKeyProvider keyProvider, TModel update)
+        public async Task<IHttpActionResult> Put([FromRouteData] IKeyProvider keyProvider, TModel update)
         {
             if (!ModelState.IsValid)
             {

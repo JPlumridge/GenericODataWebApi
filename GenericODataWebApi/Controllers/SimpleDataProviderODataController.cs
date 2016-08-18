@@ -28,21 +28,17 @@ namespace GenericODataWebApi
 
         [EnableQueryCustomValidation]
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public async Task<SingleResult<TEntity>> GetByKey(IKeyProvider keyProvider)
+        public async Task<SingleResult<TEntity>> GetByKey([FromRouteData]IKeyProvider keyProvider)
         {
-            //var thing = (IKeyProvider) keyProvider;
-            var thing = this.ControllerContext.RouteData.Values.Values.OfType<IKeyProvider>().SingleOrDefault();
-
-            var result = await DataProvider.GetByKeyAsQueryable(thing);
+            var result = await DataProvider.GetByKeyAsQueryable(keyProvider);
             return SingleResult.Create<TEntity>(result);
         }
 
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public async Task<IHttpActionResult> GetProperty(IKeyProvider keyProvider, string propertyName)
+        public async Task<IHttpActionResult> GetProperty([FromRouteData]IKeyProvider keyProvider, string propertyName)
         {
             var prop = GetPropertyInfo<TEntity>(propertyName);
-            //var container = await DataProvider.GetByKey(key);
-            var container = (await DataProvider.GetByKeyAsQueryable(keyProvider)).First();
+            var container = await DataProvider.GetByKey(keyProvider);
             
             dynamic value = prop.GetValue(container);
             return Ok(value);
