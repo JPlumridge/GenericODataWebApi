@@ -84,7 +84,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataProvider\IKey.cs" />
+    <Compile Include="DataProvider\QueryableKeyLocatorStrategy.cs" />
+    <Compile Include="Keys\CompositeKey.cs" />
+    <Compile Include="Keys\ISingleKey.cs" />
+    <Compile Include="Keys\IKeyLocatorStrategy.cs" />
+    <Compile Include="Keys\IKeyProvider.cs" />
+    <Compile Include="Keys\SingleKey.cs" />
     <Compile Include="Routing\FromRouteDataAttribute.cs" />
     <Compile Include="Routing\RouteBasedODataControllerSelector.cs" />
     <Compile Include="Controllers\IGenericODataController.cs" />

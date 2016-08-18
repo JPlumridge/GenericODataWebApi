@@ -10,11 +10,11 @@ using GenericODataWebApi.DataProvider;
 
 namespace GenericODataWebApi.EntityFramework
 {
-    public class EntityFrameworkPrimaryKeyLocator<TEntity> : IKeyLocator<TEntity> where TEntity : class
+    public class EntityFrameworkPrimaryKeyLocatorStrategy<TEntity> : IKeyLocatorStrategy<TEntity> where TEntity : class
     {
         private DbContext db;
 
-        public EntityFrameworkPrimaryKeyLocator(DbContext dbContext)
+        public EntityFrameworkPrimaryKeyLocatorStrategy(DbContext dbContext)
         {
             db = dbContext;
         }
@@ -30,12 +30,13 @@ namespace GenericODataWebApi.EntityFramework
     public class EntityFrameworkODataProvider<TEntity> : IODataProvider<TEntity> where TEntity : class
     {
         private DbContext db;
-        private IKeyLocator<TEntity> KeyLocator { get; }
+        private IKeyLocatorStrategy<TEntity> KeyLocatorStrategy { get; }
 
         public EntityFrameworkODataProvider(DbContext dbContext)
         {
             db = dbContext;
-            this.KeyLocator = new EntityFrameworkPrimaryKeyLocator<TEntity>(dbContext); //todo: decouple
+            //this.KeyLocator = new EntityFrameworkPrimaryKeyLocator<TEntity>(dbContext); //todo: decouple
+            this.KeyLocatorStrategy = new QueryableKeyLocatorStrategy<TEntity>(dbContext.Set<TEntity>());
         }
 
         public IQueryable<TEntity> Get()
@@ -51,7 +52,7 @@ namespace GenericODataWebApi.EntityFramework
 
         public async Task<TEntity> GetByKey(IKeyProvider keyProvider)
         {
-            return await KeyLocator.FindByKey(keyProvider);
+            return await KeyLocatorStrategy.FindByKey(keyProvider);
         }
 
         //// <summary>

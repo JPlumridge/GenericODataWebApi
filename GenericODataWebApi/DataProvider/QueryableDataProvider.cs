@@ -8,48 +8,15 @@ using System.Web.OData;
 
 namespace GenericODataWebApi.DataProvider
 {
-    //public static class QueryableExtensions
-    //{
-    //    public static T FindByKey<T>(this IQueryable<T> sourceQueryable, Dictionary<string, object> keyValues)
-    //    {
-    //        var entityType = typeof(T);
-    //        var keyProps = keyValues.Select(kvp => new { value = kvp.Value, prop = entityType.GetProperty(kvp.Key) });
-    //        var match = sourceQueryable.SingleOrDefault(i => keyProps.All(kp => kp.prop.GetValue(i) == kp.value));
-
-    //        return match;
-    //    }
-    //}
-
-    public class QueryableKeyLocator<T> : IKeyLocator<T>
-    {
-        private IQueryable<T> SourceQueryable { get; }
-
-        public QueryableKeyLocator(IQueryable<T> sourceQueryable)
-        {
-            this.SourceQueryable = sourceQueryable;
-        }
-
-        public Task<T> FindByKey(IKeyProvider keyProvider)
-        {
-            var entityType = typeof(T);
-            var keys = keyProvider.GetKeys();
-
-            var keyProps = keys.Select(key => new { value = key.Value, prop = entityType.GetProperty(key.Name) });
-            var match = SourceQueryable.SingleOrDefault(i => keyProps.All(kp => kp.prop.GetValue(i) == kp.value));
-
-            return Task.FromResult(match);
-        }
-    }
-
     public class QueryableDataProvider<TEntity> : IODataProvider<TEntity> where TEntity : class
     {
         private IQueryable<TEntity> SourceQueryable { get; }
-        private IKeyLocator<TEntity> KeyLocator { get; } 
+        private IKeyLocatorStrategy<TEntity> KeyLocatorStrategy { get; } 
 
         public QueryableDataProvider(IQueryable<TEntity> sourceQueryable)
         {
             this.SourceQueryable = sourceQueryable;
-            this.KeyLocator = new QueryableKeyLocator<TEntity>(SourceQueryable); //todo: decouple!
+            this.KeyLocatorStrategy = new QueryableKeyLocatorStrategy<TEntity>(SourceQueryable); //todo: decouple!
         }
         public Task Add(TEntity item)
         {
@@ -68,12 +35,12 @@ namespace GenericODataWebApi.DataProvider
 
         public Task<TEntity> GetByKey(IKeyProvider keyProvider)
         {
-            return KeyLocator.FindByKey(keyProvider);
+            return KeyLocatorStrategy.FindByKey(keyProvider);
         }
 
         public Task<IQueryable<TEntity>> GetByKeyAsQueryable(IKeyProvider keyProvider)
         {
-            var queryable = new[] {KeyLocator.FindByKey(keyProvider).Result}.AsQueryable();
+            var queryable = new[] {KeyLocatorStrategy.FindByKey(keyProvider).Result}.AsQueryable();
             return Task.FromResult(queryable);
         }
 
