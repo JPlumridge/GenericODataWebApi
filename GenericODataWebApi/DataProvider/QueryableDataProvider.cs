@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 using System.Web.OData;
 
 namespace GenericODataWebApi.DataProvider
@@ -17,16 +19,15 @@ namespace GenericODataWebApi.DataProvider
         {
             this.SourceQueryable = sourceQueryable;
             this.KeyLocator = keyLocator;
-            //this.KeyLocator = new QueryableKeyLocatorStrategy<TEntity>(SourceQueryable); //todo: decouple!
         }
         public Task Add(TEntity item)
         {
-            throw new NotImplementedException();
+            throw GetMethodNotAllowedException();
         }
 
         public Task<bool> Delete(IKeyProvider keyProvider)
         {
-            throw new NotImplementedException();
+            throw GetMethodNotAllowedException();
         }
 
         public IQueryable<TEntity> Get()
@@ -47,17 +48,23 @@ namespace GenericODataWebApi.DataProvider
 
         public Task<bool> KeyMatchesEntity(IKeyProvider keyProvider, TEntity item)
         {
-            throw new NotImplementedException();
+            throw GetMethodNotAllowedException();
         }
 
         public Task<bool> Replace(TEntity item)
         {
-            throw new NotImplementedException();
+            throw GetMethodNotAllowedException();
         }
 
         public Task<TEntity> Update(IKeyProvider keyProvider, Delta<TEntity> deltaEntity)
         {
-            throw new NotImplementedException();
+            throw GetMethodNotAllowedException();
+        }
+
+        private HttpResponseException GetMethodNotAllowedException()
+        {
+            var message = new HttpResponseMessage(HttpStatusCode.MethodNotAllowed) { Content = new StringContent("The data source does not allow this operation") };
+            return new HttpResponseException(message);
         }
     }
 }

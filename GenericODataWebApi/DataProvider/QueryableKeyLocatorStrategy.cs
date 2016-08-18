@@ -22,6 +22,6 @@ namespace GenericODataWebApi.DataProvider
             var match = SourceQueryable.SingleOrDefault(i => keyProps.All(kp => (int)kp.prop.GetValue(i) == (int)kp.value));
 
             return Task.FromResult(match);
-        }
+        }  
     }
 }

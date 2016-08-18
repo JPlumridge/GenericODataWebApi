@@ -27,6 +27,7 @@ namespace GenericODataWebApi.EntityFramework
         public static void RegisterEntityFrameworkOData(this IUnityContainer container, Type dbContextType)
         {
             container.RegisterType(typeof(DbContext), dbContextType);
+            container.RegisterType(typeof(IKeyLocatorStrategy<>), typeof(EntityFrameworkPrimaryKeyLocatorStrategy<>));
             container.RegisterType(typeof(IODataProvider<>), typeof(EntityFrameworkODataProvider<>));
         }
     }

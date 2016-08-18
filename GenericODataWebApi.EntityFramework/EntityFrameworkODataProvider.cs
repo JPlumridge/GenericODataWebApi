@@ -10,33 +10,15 @@ using GenericODataWebApi.DataProvider;
 
 namespace GenericODataWebApi.EntityFramework
 {
-    public class EntityFrameworkPrimaryKeyLocatorStrategy<TEntity> : IKeyLocatorStrategy<TEntity> where TEntity : class
-    {
-        private DbContext db;
-
-        public EntityFrameworkPrimaryKeyLocatorStrategy(DbContext dbContext)
-        {
-            db = dbContext;
-        }
-
-        public async Task<TEntity> FindByKey(IKeyProvider keyProvider)
-        {
-            var keys = keyProvider.GetKeys().Select(k => k.Value);
-            return await db.Set<TEntity>().FindAsync(keys.ToArray());
-        }
-    }
-
-
     public class EntityFrameworkODataProvider<TEntity> : IODataProvider<TEntity> where TEntity : class
     {
         private DbContext db;
         private IKeyLocatorStrategy<TEntity> KeyLocatorStrategy { get; }
 
-        public EntityFrameworkODataProvider(DbContext dbContext)
+        public EntityFrameworkODataProvider(DbContext dbContext, IKeyLocatorStrategy<TEntity> keyLocator)
         {
             db = dbContext;
-            //this.KeyLocator = new EntityFrameworkPrimaryKeyLocator<TEntity>(dbContext); //todo: decouple
-            this.KeyLocatorStrategy = new QueryableKeyLocatorStrategy<TEntity>(dbContext.Set<TEntity>());
+            this.KeyLocatorStrategy = keyLocator;
         }
 
         public IQueryable<TEntity> Get()
@@ -54,15 +36,6 @@ namespace GenericODataWebApi.EntityFramework
         {
             return await KeyLocatorStrategy.FindByKey(keyProvider);
         }
-
-        //// <summary>
-        //// If your key is NOT the primary key, override this!
-        //// </summary>
-        //public virtual async Task<TEntity> GetByKey(int key)
-        //{
-        //    //todo: ascertain what the key actually is
-        //    return await db.Set<TEntity>().FindAsync(key);
-        //}
 
         public async Task<bool> Delete(IKeyProvider keyProvider)
         {
