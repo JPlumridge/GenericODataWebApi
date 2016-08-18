@@ -11,12 +11,13 @@ namespace GenericODataWebApi.DataProvider
     public class QueryableDataProvider<TEntity> : IODataProvider<TEntity> where TEntity : class
     {
         private IQueryable<TEntity> SourceQueryable { get; }
-        private IKeyLocatorStrategy<TEntity> KeyLocatorStrategy { get; } 
+        private IKeyLocatorStrategy<TEntity> KeyLocator { get; } 
 
-        public QueryableDataProvider(IQueryable<TEntity> sourceQueryable)
+        public QueryableDataProvider(IQueryable<TEntity> sourceQueryable, IKeyLocatorStrategy<TEntity> keyLocator)
         {
             this.SourceQueryable = sourceQueryable;
-            this.KeyLocatorStrategy = new QueryableKeyLocatorStrategy<TEntity>(SourceQueryable); //todo: decouple!
+            this.KeyLocator = keyLocator;
+            //this.KeyLocator = new QueryableKeyLocatorStrategy<TEntity>(SourceQueryable); //todo: decouple!
         }
         public Task Add(TEntity item)
         {
@@ -35,12 +36,12 @@ namespace GenericODataWebApi.DataProvider
 
         public Task<TEntity> GetByKey(IKeyProvider keyProvider)
         {
-            return KeyLocatorStrategy.FindByKey(keyProvider);
+            return KeyLocator.FindByKey(keyProvider);
         }
 
         public Task<IQueryable<TEntity>> GetByKeyAsQueryable(IKeyProvider keyProvider)
         {
-            var queryable = new[] {KeyLocatorStrategy.FindByKey(keyProvider).Result}.AsQueryable();
+            var queryable = new[] {KeyLocator.FindByKey(keyProvider).Result}.AsQueryable();
             return Task.FromResult(queryable);
         }
 
