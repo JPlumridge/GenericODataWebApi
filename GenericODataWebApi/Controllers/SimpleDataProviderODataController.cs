@@ -74,7 +74,7 @@ namespace GenericODataWebApi
                 return BadRequest(ModelState);
             }
 
-            if (!DataProvider.KeyMatchesEntity(keyProvider, update))
+            if (!await DataProvider.KeyMatchesEntity(keyProvider, update))
             {
                 return BadRequest();
             }
@@ -85,7 +85,7 @@ namespace GenericODataWebApi
         }
 
         [IfODataMethodEnabled(ODataOperations.Update)]
-        public async Task<IHttpActionResult> Patch([FromODataUri] IKeyProvider keyProvider, Delta<TEntity> deltaEntity)
+        public async Task<IHttpActionResult> Patch([FromRouteData] IKeyProvider keyProvider, Delta<TEntity> deltaEntity)
         {
             if (!ModelState.IsValid)
             {

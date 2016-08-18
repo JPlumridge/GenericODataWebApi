@@ -72,7 +72,7 @@ namespace GenericODataWebApi
 
             var converted = update.Map<TEntity>();
 
-            if (!DataProvider.KeyMatchesEntity(keyProvider, converted))
+            if (!await DataProvider.KeyMatchesEntity(keyProvider, converted))
             {
                 return BadRequest();
             }

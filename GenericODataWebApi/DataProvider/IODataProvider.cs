@@ -14,7 +14,7 @@ namespace GenericODataWebApi
         IQueryable<TEntity> Get();
         Task<TEntity> GetByKey(IKeyProvider keyProvider);
         Task<IQueryable<TEntity>> GetByKeyAsQueryable(IKeyProvider keyProvider);
-        bool KeyMatchesEntity(IKeyProvider keyProvider, TEntity item);
+        Task<bool> KeyMatchesEntity(IKeyProvider keyProvider, TEntity item);
         Task<bool> Replace(TEntity item);
         Task<TEntity> Update(IKeyProvider keyProvider, Delta<TEntity> deltaEntity);
     }

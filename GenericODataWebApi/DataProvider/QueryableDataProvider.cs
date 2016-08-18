@@ -77,7 +77,7 @@ namespace GenericODataWebApi.DataProvider
             return Task.FromResult(queryable);
         }
 
-        public bool KeyMatchesEntity(IKeyProvider keyProvider, TEntity item)
+        public Task<bool> KeyMatchesEntity(IKeyProvider keyProvider, TEntity item)
         {
             throw new NotImplementedException();
         }

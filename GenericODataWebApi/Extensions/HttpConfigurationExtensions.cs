@@ -19,6 +19,7 @@ namespace GenericODataWebApi
         {
             var edmModel = builder.GetEdmModel();
 
+            //todo: Replace existing conventions, where they have been directly overridden
             var routingConventions = ODataRoutingConventions.CreateDefaultWithAttributeRouting(config, edmModel);
             routingConventions.Insert(0, new PropertyODataRoutingConvention());
             routingConventions.Insert(0, new KeyRoutingConvention());

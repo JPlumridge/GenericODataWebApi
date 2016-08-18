@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataProvider\IKey.cs" />
+    <Compile Include="Routing\FromRouteDataAttribute.cs" />
     <Compile Include="Routing\RouteBasedODataControllerSelector.cs" />
     <Compile Include="Controllers\IGenericODataController.cs" />
     <Compile Include="Controllers\DataProviderODataController.cs" />

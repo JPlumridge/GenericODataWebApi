@@ -125,11 +125,11 @@ namespace GenericODataWebApi.EntityFramework
             }
         }
 
-        public bool KeyMatchesEntity(IKeyProvider keyProvider, TEntity item)
+        public async Task<bool> KeyMatchesEntity(IKeyProvider keyProvider, TEntity item)
         {
             var efAwareItem = db.Set<TEntity>().Attach(item);
 
-            var keyItem = GetByKey(keyProvider);
+            var keyItem = await GetByKey(keyProvider);
             return efAwareItem == keyItem;
         }
     }
