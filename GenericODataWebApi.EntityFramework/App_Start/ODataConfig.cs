@@ -33,7 +33,6 @@ namespace GenericODataWebApi.EntityFramework
             */
 
             config.EnableOData(builder);
-
         }
     }
 }
