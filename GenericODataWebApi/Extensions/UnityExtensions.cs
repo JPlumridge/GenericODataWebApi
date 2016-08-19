@@ -24,14 +24,15 @@ namespace GenericODataWebApi.Extensions
                                                                                                 new ResolvedParameter<IKeyLocatorStrategy<TEntity>>()));
         }
 
-        public static void RegisterQueryableKeyLocationStrategy<T>(this IUnityContainer container, IQueryable<T> sourceQueryable)
+        /// <summary>
+        /// Registers the default key locator for the given IQueryable
+        /// </summary>
+        /// <typeparam name="TEntity">The type for which to use the default key locator</typeparam>
+        /// <param name="container"></param>
+        /// <param name="sourceQueryable">Queryable data source for which to use the default key locator</param>
+        public static void RegisterQueryableKeyLocationStrategy<TEntity>(this IUnityContainer container, IQueryable<TEntity> sourceQueryable)
         {
-            container.RegisterType<IKeyLocatorStrategy<T>, QueryableKeyLocatorStrategy<T>>(new InjectionConstructor(sourceQueryable));
+            container.RegisterType<IKeyLocatorStrategy<TEntity>, QueryableKeyLocatorStrategy<TEntity>>(new InjectionConstructor(sourceQueryable));
         }
-
-        //public static void RegisterKeyLocationStrategy<TStrategy, TEntity>(this IUnityContainer container) where TStrategy : IKeyLocatorStrategy<TEntity>
-        //{
-        //    container.RegisterType<IKeyLocatorStrategy<TEntity>, TStrategy>();
-        //}
     }
 }

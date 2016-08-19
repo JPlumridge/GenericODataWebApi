@@ -18,6 +18,7 @@ namespace GenericODataWebApi
             //var defaults = base.GetValueProviderFactories(configuration);
         }
     }
+
     public class RouteDataObjectValueProviderFactory : ValueProviderFactory
     {
         public override IValueProvider GetValueProvider(HttpActionContext actionContext)

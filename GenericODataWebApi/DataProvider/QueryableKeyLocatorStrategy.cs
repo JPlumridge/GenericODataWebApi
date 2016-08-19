@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace GenericODataWebApi.DataProvider
             var keys = keyProvider.GetKeys();
 
             var keyProps = keys.Select(key => new { value = key.Value, prop = entityType.GetProperty(key.Name) });
-            var match = SourceQueryable.SingleOrDefault(i => keyProps.All(kp => (int)kp.prop.GetValue(i) == (int)kp.value));
+            var match = SourceQueryable.SingleOrDefault(i => keyProps.All(kp => kp.prop.GetValue(i).Equals(kp.value)));
 
             return Task.FromResult(match);
         }  
