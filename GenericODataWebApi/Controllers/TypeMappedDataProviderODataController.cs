@@ -25,7 +25,7 @@ namespace GenericODataWebApi
 
         [EnableQueryCustomValidation]
         [IfODataMethodEnabled(ODataOperations.Get)]
-        public async Task<SingleResult<TModel>> Get([FromRouteData] IKeyProvider keyProvider)
+        public async Task<SingleResult<TModel>> GetByKey([FromRouteData] IKeyProvider keyProvider)
         {
             var result = (await DataProvider.GetByKeyAsQueryable(keyProvider)).ProjectUsingCustom<TModel>();
             return SingleResult.Create<TModel>(result);

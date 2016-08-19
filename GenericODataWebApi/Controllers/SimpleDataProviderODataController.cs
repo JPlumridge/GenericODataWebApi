@@ -13,7 +13,7 @@ using System.Web.OData.Routing;
 
 namespace GenericODataWebApi
 {
-    public class SimpleDataProviderODataController<TEntity> : DataProviderODataController<TEntity>/*, IGenericODataController<TEntity>*/ where TEntity : class
+    public class SimpleDataProviderODataController<TEntity> : DataProviderODataController<TEntity>, IGenericODataController<TEntity> where TEntity : class
     {
         public SimpleDataProviderODataController(IODataProvider<TEntity> dataProvider) : base( dataProvider)
         {
