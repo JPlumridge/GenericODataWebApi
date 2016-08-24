@@ -1,12 +1,14 @@
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http.Controllers;
+using System.Web.OData;
 using System.Web.OData.Routing;
 using System.Web.OData.Routing.Conventions;
+using Microsoft.OData.Edm;
 
 namespace GenericODataWebApi
 {
-    public class PropertyODataRoutingConvention : NavigationSourceRoutingConvention //todo: user NavigationRoutingConvention? And "replace" existing one with this, and return base.SelectAction
+    public class PropertyODataRoutingConvention : NavigationSourceRoutingConvention //todo: use NavigationRoutingConvention? And "replace" existing one with this, and return base.SelectAction
     {
         private const string ActionName = "GetProperty";
         private const string ParameterName = "propertyName";
@@ -20,10 +22,17 @@ namespace GenericODataWebApi
                 var propSegment = odataPath.Segments[2] as PropertyAccessPathSegment;
                 var navSegment = odataPath.Segments[2] as NavigationPathSegment;
                 
-                var propName = propSegment == null ? navSegment.NavigationPropertyName : propSegment.PropertyName; 
+                var httpConfig = controllerContext.Request.GetConfiguration();
+                var odataRoute = httpConfig.Routes.First(r => r is ODataRoute) as ODataRoute;
+                var edmModel = odataRoute.PathRouteConstraint.EdmModel;
+
+                IEdmElement element = propSegment?.Property ?? navSegment.NavigationProperty;
+                var propInfoAnnotation = edmModel.GetAnnotationValue<ClrPropertyInfoAnnotation>(element);
+                
+                var propName = propInfoAnnotation?.ClrPropertyInfo?.Name;
+                propName = propName ?? (propSegment == null ? navSegment.NavigationPropertyName : propSegment.PropertyName); 
                 
                 controllerContext.RouteData.Values[ParameterName] = propName;
-
                 return ActionName;
             }
             return null;

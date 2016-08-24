@@ -76,6 +76,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
@@ -103,6 +104,7 @@
     <Compile Include="Keys\IKeyLocatorStrategy.cs" />
     <Compile Include="Keys\IKeyProvider.cs" />
     <Compile Include="Keys\SingleKey.cs" />
+    <Compile Include="OData\TempAliasingStuff.cs" />
     <Compile Include="Routing\FromRouteDataAttribute.cs" />
     <Compile Include="Routing\RouteBasedODataControllerSelector.cs" />
     <Compile Include="Controllers\IGenericODataController.cs" />
@@ -132,7 +134,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)bin\$(ConfigurationName)\$(ProjectName).dll" "$(SolutionDir)GenericODataWebApiKickStart\lib\net45" /Ys</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

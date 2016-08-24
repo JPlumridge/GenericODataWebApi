@@ -45,10 +45,6 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GenericODataWebApi, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3ff0cd5338256a44, processorArchitecture=MSIL">
-      <HintPath>..\packages\GenericODataWebApi.1.3.1\lib\net45\GenericODataWebApi.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.OData.Core, Version=6.15.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.OData.Core.6.15.0\lib\portable-net45+win+wpa81\Microsoft.OData.Core.dll</HintPath>
       <Private>True</Private>
@@ -128,9 +124,16 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GenericODataWebApi\GenericODataWebApi.csproj">
+      <Project>{2bbd1053-755c-4fdf-ab3b-0a92bb995bdb}</Project>
+      <Name>GenericODataWebApi</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)bin\$(ConfigurationName)\$(ProjectName).dll" "$(SolutionDir)\GenericODataWebApi.EntityFramework.Packager\lib\net45" /Ys</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
