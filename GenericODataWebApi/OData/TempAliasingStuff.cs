@@ -68,13 +68,33 @@ namespace GenericODataWebApi.OData
                     }
                 }
 
+                //if (excludedProperties.Any(p => p.Name == dataMemberAttribute.Name))
+                //{
+                //    throw new InvalidOperationException(
+                //        $"Entity '{entitySet.Name}' of type '{clrType.Name}' already contains a property called '' ttribute, please remove this before you apply a DataContract on the metadata!"););
+                //}
+
                 IgnoreProperties(entitySet.EntityType, excludedProperties.Select(p => p.PropertyInfo));
+                AssertNoDuplicateProperties(entitySet);
             }
         }
 
         private static bool IsDataContractEnabledOnType(Type type)
         {
             return type != null && type.GetTypeInfo().GetCustomAttributes(typeof(DataContractAttribute), inherit: true).Any();
+        }
+
+        private static void AssertNoDuplicateProperties(EntitySetConfiguration entitySet)
+        {
+            var properties = entitySet.EntityType.Properties.ToList();
+            var firstDuplicate = properties.FirstOrDefault(p => properties.Where(prop => prop.Name == p.Name).Skip(1).Any());
+
+            if (firstDuplicate != null)
+            {
+                throw new InvalidOperationException(
+                    $"As a result of model aliasing, entity '{entitySet.Name}' of type '{entitySet.EntityType.ClrType.Name}' contains multiple properties called '{firstDuplicate.Name}'. Please fix this, or the OData framework will produce unpredictable results!");
+            }
+
         }
 
         private static void IgnoreProperties(EntityTypeConfiguration entityType, IEnumerable<PropertyInfo> properties)
