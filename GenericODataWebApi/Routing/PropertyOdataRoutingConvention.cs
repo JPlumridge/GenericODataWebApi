@@ -1,8 +1,10 @@
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http.Controllers;
+using System.Web.OData;
 using System.Web.OData.Routing;
 using System.Web.OData.Routing.Conventions;
+using Microsoft.OData.Edm;
 
 namespace GenericODataWebApi
 {
@@ -19,11 +21,18 @@ namespace GenericODataWebApi
             {
                 var propSegment = odataPath.Segments[2] as PropertyAccessPathSegment;
                 var navSegment = odataPath.Segments[2] as NavigationPathSegment;
-                
-                var propName = propSegment == null ? navSegment.NavigationPropertyName : propSegment.PropertyName; 
-                
-                controllerContext.RouteData.Values[ParameterName] = propName;
 
+                var httpConfig = controllerContext.Request.GetConfiguration();
+                var odataRoute = httpConfig.Routes.First(r => r is ODataRoute) as ODataRoute;
+                var edmModel = odataRoute.PathRouteConstraint.EdmModel;
+
+                IEdmElement element = propSegment?.Property ?? navSegment.NavigationProperty;
+                var propInfoAnnotation = edmModel.GetAnnotationValue<ClrPropertyInfoAnnotation>(element);
+
+                var propName = propInfoAnnotation?.ClrPropertyInfo?.Name;
+                propName = propName ?? (propSegment == null ? navSegment.NavigationPropertyName : propSegment.PropertyName);
+
+                controllerContext.RouteData.Values[ParameterName] = propName;
                 return ActionName;
             }
             return null;
