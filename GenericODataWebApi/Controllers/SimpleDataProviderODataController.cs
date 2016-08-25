@@ -34,6 +34,7 @@ namespace GenericODataWebApi
             return SingleResult.Create<TEntity>(result);
         }
 
+        [EnableQueryCustomValidation]
         [IfODataMethodEnabled(ODataOperations.Get)]
         public async Task<IHttpActionResult> GetProperty([FromRouteData]IKeyProvider keyProvider, string propertyName)
         {
