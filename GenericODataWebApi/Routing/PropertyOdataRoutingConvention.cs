@@ -15,6 +15,8 @@ namespace GenericODataWebApi
 
         public override string SelectAction(ODataPath odataPath, HttpControllerContext controllerContext, ILookup<string, HttpActionDescriptor> actionMap)
         {
+            // Need to support bloody stuff like this: ~/entityset/key/navigation/navigation/key
+
             if ((controllerContext.Request.Method == HttpMethod.Get) &&
                 (odataPath.PathTemplate.StartsWith("~/entityset/key/property") || odataPath.PathTemplate.StartsWith("~/entityset/key/navigation")) &&
                 actionMap.Contains(ActionName))

@@ -32,6 +32,7 @@ namespace GenericODataWebApi
         }
 
         //todo: less duplication with base
+        [EnableQueryCustomValidation]
         [IfODataMethodEnabled(ODataOperations.Get)]
         public async Task<IHttpActionResult> GetProperty([FromRouteData]IKeyProvider keyProvider, string propertyName)
         {
