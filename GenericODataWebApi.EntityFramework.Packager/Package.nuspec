@@ -4,7 +4,7 @@
     <id>GenericODataWebApi.EntityFramework</id>
     <version>1.1.4</version>
     <title>GenericODataWebApi.EntityFramework</title>
-    <authors>Developer</authors>
+    <authors>Jonathan Plumridge</authors>
     <owners></owners>
     <description>
       Provides an Entity Framework provider for use with the GenericODataWebApi package
