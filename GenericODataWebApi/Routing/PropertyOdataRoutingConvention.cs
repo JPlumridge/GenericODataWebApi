@@ -8,6 +8,7 @@ using Microsoft.OData.Edm;
 
 namespace GenericODataWebApi
 {
+    //todo: rename
     public class PropertyODataRoutingConvention : NavigationSourceRoutingConvention //todo: user NavigationRoutingConvention? And "replace" existing one with this, and return base.SelectAction
     {
         private const string ActionName = "GetProperty";
@@ -41,6 +42,7 @@ namespace GenericODataWebApi
         }
     }
 
+    //todo: This probably needs to be an abstract base class, instead of having to be added as the first routing convention
     public class KeyDetectorRoutingConvention : EntityRoutingConvention
     {
         private const string ParameterName = "keyProvider";

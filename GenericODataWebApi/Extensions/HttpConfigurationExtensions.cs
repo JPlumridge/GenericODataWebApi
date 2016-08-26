@@ -21,7 +21,15 @@ namespace GenericODataWebApi
 
             //todo: Replace existing conventions, where they have been directly overridden
             var routingConventions = ODataRoutingConventions.CreateDefaultWithAttributeRouting(config, edmModel);
-            routingConventions.Insert(0, new PropertyODataRoutingConvention());
+
+            //Interesting note: Although the "PropertyODataRoutingConvention" is added last, to allow direct implementations of property-getters to
+            //be selected by the regular OData routing conventions, if you directly implement a property-getter, with the correct name, but fail to name
+            //the "[FromODataUri]" parameter "key", the regular PropertyRoutingConvention will cause the following error!:
+            // "No action was found on the controller '<name>' that matches the request."
+            routingConventions.Add(new PropertyODataRoutingConvention());
+
+            //For some reason, if these aren't first, then the regular routing conventions will at some point return the entire entity set
+            //when querying for a single item by key!
             routingConventions.Insert(0, new KeyRoutingConvention());
             routingConventions.Insert(0, new KeyDetectorRoutingConvention());
 
