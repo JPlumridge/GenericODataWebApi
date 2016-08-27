@@ -8,22 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
 using System.Runtime.Serialization;
+using GenericODataWebApi.Extensions;
 
 namespace GenericODataWebApi.OData
 {
-    static class TempAliasingStuff
+    internal class CustomAliasingOnModelCreatingProvider : IOnModelCreatingProvider
     {
-        public static IEnumerable<MemberInfo> GetMetadataMembers(this Type type)
+        public Action<ODataConventionModelBuilder> GetOnModelCreating()
         {
-            var metadataAttr = type.GetCustomAttributes<MetadataTypeAttribute>().FirstOrDefault();
-
-            IEnumerable<MemberInfo> metadataMembers = metadataAttr?.MetadataClassType.GetProperties();
-            metadataMembers = metadataMembers?.Concat(metadataAttr.MetadataClassType.GetFields());
-
-            return metadataMembers ?? Enumerable.Empty<MemberInfo>();
+            return SetupMetadataAliasingOnModelCreating;
         }
 
-        private static void SetupMetadataAliasingOnModelCreating(ODataConventionModelBuilder builder)
+        private void SetupMetadataAliasingOnModelCreating(ODataConventionModelBuilder builder)
         {
             foreach (var entitySet in builder.EntitySets)
             {
@@ -31,7 +27,7 @@ namespace GenericODataWebApi.OData
             }
         }
 
-        private static void SetupAliasingFromMetadata(EntitySetConfiguration entitySet)
+        private void SetupAliasingFromMetadata(EntitySetConfiguration entitySet)
         {
             var clrType = entitySet.ClrType;
             var metadataType = clrType.GetCustomAttributes<MetadataTypeAttribute>().FirstOrDefault()?.MetadataClassType;
@@ -79,12 +75,12 @@ namespace GenericODataWebApi.OData
             }
         }
 
-        private static bool IsDataContractEnabledOnType(Type type)
+        private bool IsDataContractEnabledOnType(Type type)
         {
             return type != null && type.GetTypeInfo().GetCustomAttributes(typeof(DataContractAttribute), inherit: true).Any();
         }
 
-        private static void AssertNoDuplicateProperties(EntitySetConfiguration entitySet)
+        private void AssertNoDuplicateProperties(EntitySetConfiguration entitySet)
         {
             var properties = entitySet.EntityType.Properties.ToList();
             var firstDuplicate = properties.FirstOrDefault(p => properties.Where(prop => prop.Name == p.Name).Skip(1).Any());
@@ -97,7 +93,7 @@ namespace GenericODataWebApi.OData
 
         }
 
-        private static void IgnoreProperties(EntityTypeConfiguration entityType, IEnumerable<PropertyInfo> properties)
+        private void IgnoreProperties(EntityTypeConfiguration entityType, IEnumerable<PropertyInfo> properties)
         {
             foreach (var property in properties)
             {
@@ -105,7 +101,7 @@ namespace GenericODataWebApi.OData
             }
         }
 
-        private static void IgnorePropertyOnEntityType(EntityTypeConfiguration entityType, PropertyInfo propInfo)
+        private void IgnorePropertyOnEntityType(EntityTypeConfiguration entityType, PropertyInfo propInfo)
         {
             //This method builds an expression to execute the equivilant of:
             // builder.EntityType<MyEntity>().Ignore<string>(e => e.SomeStringProperty)
@@ -133,7 +129,7 @@ namespace GenericODataWebApi.OData
             topLevelLambda.Compile().DynamicInvoke();
         }
 
-        private static Expression GetPropretyAccessorExpression(PropertyInfo propInfo)
+        private Expression GetPropretyAccessorExpression(PropertyInfo propInfo)
         {
             //This method builds an expression equivilant to:
             // instance => instance.SomeProperty

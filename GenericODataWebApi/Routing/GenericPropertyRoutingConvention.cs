@@ -8,9 +8,9 @@ using Microsoft.OData.Edm;
 
 namespace GenericODataWebApi
 {
-    //todo: rename
-    public class PropertyODataRoutingConvention : NavigationSourceRoutingConvention //todo: user NavigationRoutingConvention? And "replace" existing one with this, and return base.SelectAction
+    public class GenericPropertyRoutingConvention : NavigationSourceRoutingConvention //todo: user NavigationRoutingConvention? And "replace" existing one with this, and return base.SelectAction
     {
+        //todo: don't rely on controllers/interface having matching name, but specify in a single place somehow.
         private const string ActionName = "GetProperty";
         private const string ParameterName = "propertyName";
 

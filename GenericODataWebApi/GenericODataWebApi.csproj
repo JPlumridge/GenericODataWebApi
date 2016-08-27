@@ -102,19 +102,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataProvider\QueryableKeyLocatorStrategy.cs" />
+    <Compile Include="OnModelCreating\AggregateOnModelCreatingProvider.cs" />
+    <Compile Include="OnModelCreating\DefaultUserSpecifiedOnModelCreatingProvider.cs" />
+    <Compile Include="OnModelCreating\IOnModelCreatingProvider.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Extensions\UnityExtensions.cs" />
     <Compile Include="Keys\CompositeKey.cs" />
     <Compile Include="Keys\ISingleKey.cs" />
     <Compile Include="Keys\IKeyLocatorStrategy.cs" />
     <Compile Include="Keys\IKeyProvider.cs" />
     <Compile Include="Keys\SingleKey.cs" />
-    <Compile Include="OData\TempAliasingStuff.cs" />
+    <Compile Include="OnModelCreating\CustomAliasingOnModelCreatingProvider.cs" />
     <Compile Include="Routing\FromRouteDataAttribute.cs" />
     <Compile Include="Routing\RouteBasedODataControllerSelector.cs" />
     <Compile Include="Controllers\IGenericODataController.cs" />
     <Compile Include="Controllers\DataProviderODataController.cs" />
     <Compile Include="Controllers\TypeMappedDataProviderODataController.cs" />
-    <Compile Include="Routing\PropertyOdataRoutingConvention.cs" />
+    <Compile Include="Routing\GenericPropertyRoutingConvention.cs" />
     <Compile Include="DataProvider\IODataProvider.cs" />
     <Compile Include="DataProvider\QueryableDataProvider.cs" />
     <Compile Include="Extensions\HttpConfigurationExtensions.cs" />
