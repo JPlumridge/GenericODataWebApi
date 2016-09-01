@@ -24,7 +24,7 @@ builder.EntitySet<Location>("Locations");
 
 config.EnableOData(builder);
 ```
-The package aslo adds the file ``UnityConfig.cs`` in which an ``IODataProvider`` must be registered:
+The package also adds the file ``UnityConfig.cs`` in which an ``IODataProvider`` must be registered:
 ```C#
 container.RegisterType(typeof(IODataProvider<>), typeof(MyODataProvider<>));
 ```
